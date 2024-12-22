@@ -25,6 +25,7 @@ public class TokenService {
     }
 
     public String generateToken(Authentication authentication) {
+        System.out.println("In token service");
         Instant now = Instant.now();
         String scope = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)

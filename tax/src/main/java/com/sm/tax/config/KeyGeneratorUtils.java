@@ -15,6 +15,7 @@ final class KeyGeneratorUtils {
     static KeyPair generateRsaKey() {
         KeyPair keyPair;
         try {
+            System.out.println("in key geenrator utils");
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
             keyPair = keyPairGenerator.generateKeyPair();

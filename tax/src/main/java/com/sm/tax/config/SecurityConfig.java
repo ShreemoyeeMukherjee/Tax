@@ -42,6 +42,7 @@ public class SecurityConfig {
 
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
+        System.out.println("In jwksource");
         rsaKey = Jwks.generateRsa();  
         //System.out.println(rsaKey);
 
@@ -51,6 +52,7 @@ public class SecurityConfig {
     }
     @Bean
     JwtEncoder jwtEncoder(JWKSource<SecurityContext> jwks) {
+        System.out.println("In jwt encoder");
         return new NimbusJwtEncoder(jwks);
     }
     @Bean
@@ -70,6 +72,7 @@ public class SecurityConfig {
 
 @Bean
     public AuthenticationManager authManager(CustomUserDetailsService userDetailsService) {
+        System.out.println("In auth manager");
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setPasswordEncoder(passwordEncoder());
         authProvider.setUserDetailsService(userDetailsService);
@@ -77,6 +80,7 @@ public class SecurityConfig {
     }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("In security filter chain");
         http    
                 .headers().frameOptions().sameOrigin()
                 .and()
@@ -84,10 +88,14 @@ public class SecurityConfig {
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/users/create-user").permitAll()
                 .requestMatchers("/users/login-user").permitAll()
+                .requestMatchers("/users/**").permitAll()
+                
+                .requestMatchers("/db-console/**").permitAll()
+                .requestMatchers("/admin/view-tax").hasAuthority("Admin")
                 .anyRequest().authenticated()
                 .and()
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
+                //.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
                 
                 // TODO: remove these after upgrading the DB from H2 infile DB
               

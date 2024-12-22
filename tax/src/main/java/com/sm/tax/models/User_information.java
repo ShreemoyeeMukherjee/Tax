@@ -1,5 +1,7 @@
 package com.sm.tax.models;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.Entity;
@@ -23,7 +25,7 @@ public class User_information {
     private String email;
     private String password;
     private String role;
-    // @OneToMany(mappedBy =  "user") // the relationship field in user
+    @OneToMany(mappedBy =  "user") // the relationship field in user
     
-    // private List<Tax>tax;
+    private List<Tax>tax;
 }

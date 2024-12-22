@@ -23,12 +23,16 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public  UserDetails loadUserByUsername(String email)
     {
+       System.out.println("In customerdetails service");
          Optional<User_information> optional_existingUser = userRepository.findByEmail(email);
          if(optional_existingUser.isPresent())
          {
               User_information existing_user = optional_existingUser.get();
               List<GrantedAuthority>grantedAuthority = new ArrayList<>();
               grantedAuthority.add(new SimpleGrantedAuthority(existing_user.getRole()));
+              for (GrantedAuthority authority : grantedAuthority) {
+               System.out.println("Authority: " + authority.getAuthority()); // This will print the role/authority
+           }
               User user_obj  = new User(existing_user.getEmail(),existing_user.getPassword(),grantedAuthority);
               return(user_obj);
          }
